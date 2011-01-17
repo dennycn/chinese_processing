@@ -1,7 +1,7 @@
 /**
  * @file      PinyinConv.cpp
  * @brief      
- * @author  wuqifu
+ * @author  wuqifu denny@pku.edu.cn
  * @date    2010-6-17
  */
 

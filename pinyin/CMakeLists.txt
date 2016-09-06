@@ -3,9 +3,9 @@ cmake_minimum_required( VERSION 2.6 )
 
 # set compile argument
 set( CMAKE_CXX_FLAGS "-O2 -Wall " )
-add_definitions(-g)
+add_definitions( -g )
 
-# set directory
+# set directory: 64/32bit, CMAKE_LIBRARY_OUTPUT_DIRECTORY
 set( LOCATION_DIR ../.. )
 IF ( CMAKE_SIZEOF_VOID_P  EQUAL 8 )
 	set( CMAKE_LIBRARY_OUTPUT_DIRECTORY ${LOCATION_DIR}/lib64 )
@@ -17,9 +17,9 @@ set( CMAKE_INSTALL_PREFIX ${LOCATION_DIR} )
 # set liberary link argument
 set( LIB_NAME pinyin)
 aux_source_directory( . CUR_DIR )
-#add_executable( ${LIB_NAME} ${CUR_DIR} )
-add_library( ${LIB_NAME} SHARED ${CUR_DIR} )
-set_target_properties( ${LIB_NAME} PROPERTIES VERSION 1.2 SOVERSION 1 )
+add_executable( ${LIB_NAME} ${CUR_DIR} )
+#add_library( ${LIB_NAME} SHARED ${CUR_DIR} )
+#set_target_properties( ${LIB_NAME} PROPERTIES VERSION 1.2 SOVERSION 1 )
 
 INSTALL ( FILES PinyinConv.h
     DESTINATION include/pinyin )

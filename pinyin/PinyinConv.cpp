@@ -110,12 +110,12 @@ string PinyinConv::getFirstSpell(const char* src)
                         p++;
                 } else {        // chinese word
                         string ret;
-			// gbk code scope: {0xB0A1--0XD7FA}, 
-                        // i, u, v isn't initial consonant of chinese syllable
+                        // gbk code scope: {0xB0A1--0XD7FA}, 
+                        // i/u/v isn't initial consonant of chinese syllable
                         iAscii = getGBValue(p);
                         if ( iAscii < 0xB0A1 || iAscii >= 0xF7FE) { p+=1; continue; }
-                        result+=(char)getGBJP(iAscii);
-                        p+=2;
+                        result += (char)getGBJP(iAscii);
+                        p += 2;
                 }
         } //end while(*p)
         return result;
@@ -129,7 +129,7 @@ string PinyinConv::getFullSpell(const char* src)
 {
         if( !src )
                 return NULL;
-	string result;
+    string result;
         int iAscii, i=0;
         int len = strlen(src);
         char *p = (char*)src;
@@ -144,7 +144,7 @@ string PinyinConv::getFullSpell(const char* src)
                     i++;
                     continue;
                 }
-                else {        // chinese word
+                else {  // chinese word
                         string ret;
                         for (int j = PINYINNUM; j >= 0; j--) {
                                if (pyvalue[j] <= iAscii) {
@@ -155,7 +155,7 @@ string PinyinConv::getFullSpell(const char* src)
                        p+=2;
                 } // end else
         } //end while(*p)
-	return result;
+    return result;
 }
 
 // return: 1-ture, 0-false
@@ -169,13 +169,12 @@ bool PinyinConv::isGBCode(const char* src)
 // return: 
 int PinyinConv::getGBValue(const char* src, int type)
 {
-        // return unsigned  int
-        if( 1 == type )
-        {
+        if( 1 == type )   // return unsigned  int
+        {   
                 return (unsigned char)src[0]*256+(unsigned char)src[1];
         }
-        else
-        {      // return signed int
+        else    // return signed int
+        {   
             int hightByte = 256 + src[0];
             int lowByte = 256 + src[1];
 
@@ -216,12 +215,14 @@ char PinyinConv::getGBJP(int iAscii)
         else if ( iAscii < 0xCEF4) ret = 'w';
         else if ( iAscii < 0xD1B9) ret = 'x';
         else if ( iAscii < 0xD4D1) ret = 'y';
-        else if ( iAscii < 0xD7FA) ret = 'z';
-         // Note: The next charsets have no laws,  need to more big wordDict.
-        else ret = '?';    
+        else if ( iAscii < 0xD7FA) ret = 'z';        
+        else { // Note: The next charsets have no laws,  need to more big wordDict.
+            ret = '?';    // default
+        }
         return ret;
 }
 
+// called by C style
 extern "C" {
     string getFirstSpell(const char* src)
     {      
@@ -235,14 +236,14 @@ extern "C" {
 
 }  // end extern "C"
 
-//int main()
-//{
-//	const char* src ="中国人民银行";
-//	printf("{%s} convert first spell is {%s}\n", src, Pinyin::getFirstSpell(src).c_str());
-//	printf("{%s} convert full spell is {%s}\n", src, Pinyin::getFullSpell(src).c_str());
-//        return 0;
-//}
-
 
 } // end namespace
 
+
+int main()
+{   // demo: 
+    const char* src ="中国人民银行";
+    printf("{%s} convert first spell is {%s}\n", src, Pinyin::getFirstSpell(src).c_str());
+    printf("{%s} convert full spell is {%s}\n", src, Pinyin::getFullSpell(src).c_str());
+    return 0;
+}

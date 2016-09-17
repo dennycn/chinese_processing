@@ -1,41 +1,5 @@
-2016/9/6
 
-编译: 
-$ cmake . && make
-// 若要编译成动态库，可修改CmakeLists.txt，注释add_executable行，去注释add_library行
-add_executable( ${LIB_NAME} ${CUR_DIR} )
-#add_library( ${LIB_NAME} SHARED ${CUR_DIR} )
-
-中文拼音转化
-1.拼音转化原理：
-中文用GBK编码，在GBK编码表中，同个拼音有多个汉字，这些汉字落在相邻区域。因此可将这些拼音相同的区域标识出来，
-如果某个汉字落在某个区域，即可判断是某种读音。
-拼音字典可分为通用拼音和自定义拼音。自定义拼音字典是某些应用场合需要用到的多音字或通用拼音字典出错要修正的字。
-本程序实现对于多音字无法完全正确处理。
-
-2. 主要数据结构和算法
-数据结构
-ALPHABETNUM：26个，拼音字母，实际中汉语声母并没有使用i/u/v值，
-PINYINNUM：396个，汉语拼音组合（声母+韵母）的总数，不含声调。
-pystr：汉语拼音字符串
-pyvalue：汉语拼音GBK编码的数值。
-
-通用拼音词典: pystr和pyvalue
-自定义拼音词典：stockGBList和stockGBpyList
-
-
-算法：
-getGBValue：组装GB两字节用数值表示，
-getGBValue：先查找自定义拼音字典_m_pyMap，再找通用拼音字典
-
-接口：提供了C和C++两种接口
-// C++ interface
-string getFirstSpell(const char* src);
-string getFullSpell(const char* src);
-
-// C interface
-extern "C" {
-    string getFirstSpell(const char* src);
-    string getFullSpell(const char* src);
-}
-
+chinese_processing, 中文处理模块，包括以下组成：
+pinyin~ 中文转拼音，包括全拼和首拼。
+scws~ Simple Chinese Words Segmentation 的缩写（简易中文分词系统），开源的中文切词，基于词频词典的机械中文分词引擎。
+ictclas~ 中科院开源的中文切词，基于隐马可夫模型。
